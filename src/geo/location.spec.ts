@@ -148,4 +148,21 @@ describe('Geo', () => {
       expect(initial.getDistanceFrom(movedAround).toMeters()).toBeLessThan(5);
     });
   });
+
+  describe('moving in opposite directions', () => {
+    it('the distance should be double', () => {
+      const initial = new GeoLocation({
+        y: 32.071971,
+        x: 34.789937,
+      });
+
+      const movedWest = initial.moveWest(Length.kilometers(2));
+      const movedEast = initial.moveEast(Length.kilometers(2));
+
+      const distance = movedWest.getDistanceFrom(movedEast);
+
+      expect(distance.toMeters()).toBeLessThan(4005);
+      expect(distance.toMeters()).toBeGreaterThan(3995);
+    });
+  });
 });
