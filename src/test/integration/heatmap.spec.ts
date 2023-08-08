@@ -63,7 +63,7 @@ describe('Heatmap', () => {
 
       const location1 = new GeoLocation({ x: long1, y: lat1 });
       const location2 = location1.moveWest(Length.meters(5));
-      const location3 = location1.moveNorth(Length.meters(100));
+      const location3 = location1.moveNorth(Length.meters(50));
 
       driver.createSample({
         longitude: location1.x,
