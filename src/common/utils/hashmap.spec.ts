@@ -90,12 +90,12 @@ describe('Hashmap', () => {
 
     for (let i = 0; i < n; i++) {
       const internationalId: InternationalId = {
-        passportNumber: faker.datatype.number({ min: 0, max: 1000000000 }),
+        passportNumber: faker.number.int({ min: 0, max: 1000000000 }),
         issuedBy: faker.lorem.words(),
       };
       const person: Person = {
-        id: faker.datatype.uuid(),
-        name: faker.name.firstName(),
+        id: faker.string.uuid(),
+        name: faker.person.firstName(),
       };
 
       tuples.push({ key: internationalId, value: person });
@@ -112,8 +112,8 @@ describe('Hashmap', () => {
 
   it('should serialize keys, regardless of the order of their properties', () => {
     const map = new HashMap<InternationalId, boolean>();
-    const passportNumber = faker.datatype.number({ min: 0, max: 1000000000 });
-    const issuedBy = faker.address.countryCode();
+    const passportNumber = faker.number.int({ min: 0, max: 1000000000 });
+    const issuedBy = faker.location.countryCode();
 
     map.set({ passportNumber, issuedBy }, true);
 
@@ -171,8 +171,8 @@ describe('Hashmap', () => {
   it('should delete keys', () => {
     const map = new HashMap<string, string>();
 
-    const key = faker.datatype.uuid();
-    const value = faker.datatype.uuid();
+    const key = faker.string.uuid();
+    const value = faker.string.uuid();
 
     map.set(key, value);
 
@@ -186,8 +186,8 @@ describe('Hashmap', () => {
   it('should copy', () => {
     const map = new HashMap<string, string>();
 
-    const key = faker.datatype.uuid();
-    const value = faker.datatype.uuid();
+    const key = faker.string.uuid();
+    const value = faker.string.uuid();
 
     map.set(key, value);
 
@@ -197,7 +197,7 @@ describe('Hashmap', () => {
 
     expect(copy.get(key)).toEqual(value);
 
-    const newValue = faker.datatype.uuid();
+    const newValue = faker.string.uuid();
     copy.set(key, newValue);
 
     expect(map.get(key)).toEqual(value);
@@ -208,15 +208,15 @@ describe('Hashmap', () => {
     const map1 = new HashMap<string, number>();
     const map2 = new HashMap<string, number>();
 
-    const key1 = faker.datatype.uuid();
-    const value1 = faker.datatype.number();
+    const key1 = faker.string.uuid();
+    const value1 = faker.number.int();
 
-    const key2 = faker.datatype.uuid();
-    const value2 = faker.datatype.number();
+    const key2 = faker.string.uuid();
+    const value2 = faker.number.int();
 
-    const mutualKey = faker.datatype.uuid();
-    const mutualValue1 = faker.datatype.number();
-    const mutualValue2 = faker.datatype.number();
+    const mutualKey = faker.string.uuid();
+    const mutualValue1 = faker.number.int();
+    const mutualValue2 = faker.number.int();
 
     map1.set(key1, value1);
     map1.set(mutualKey, mutualValue1);

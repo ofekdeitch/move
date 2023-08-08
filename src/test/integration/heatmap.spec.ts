@@ -9,6 +9,10 @@ describe('Heatmap', () => {
     await driver.clearState();
   });
 
+  afterAll(async () => {
+    await driver.stop();
+  });
+
   describe('when 2 samples exists with a 5 meters distance', () => {
     it('should aggregate them to a single point', async () => {
       // ARRAMGE
