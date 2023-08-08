@@ -17,6 +17,14 @@ export class Length {
     return new Length(kilometers * 1000);
   }
 
+  toMeters(): number {
+    return this.$meters;
+  }
+
+  toKilometers(): number {
+    return this.$meters / 1000;
+  }
+
   valueOf(): number {
     return this.$meters;
   }

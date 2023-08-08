@@ -17,8 +17,16 @@ describe('Sample', () => {
       // ACT
 
       const createSampleDto: CreateSampleDto = {
-        latitude: faker.datatype.float({ min: -90, max: 90 }),
-        longitude: faker.datatype.float({ min: -180, max: 180 }),
+        latitude: faker.number.float({
+          min: -90,
+          max: 90,
+          precision: 0.000001,
+        }),
+        longitude: faker.number.float({
+          min: -180,
+          max: 180,
+          precision: 0.000001,
+        }),
         timestamp: new Date().toISOString(),
       };
 
