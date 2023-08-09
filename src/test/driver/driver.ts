@@ -10,20 +10,24 @@ import {
   DatabaseConfig,
   DatabaseConfigService,
 } from '../../common/config/database.config';
-import { exec } from 'node:child_process';
-import { promisify } from 'node:util';
-import { makeConnectionString } from '../../prisma/connection-string';
 
-const execAsync = promisify(exec);
+import { makeConnectionString } from '../../prisma/connection-string';
+import { InMemoryState, SampleTestModel } from './glossary';
+import { runMigrations } from './prisma';
+import { faker } from '@faker-js/faker';
+import { PrismaService } from '../../prisma/prisma.service';
 
 export class TestDriver {
   private app: INestApplication;
   private postgresContainer?: StartedPostgreSqlContainer;
 
+  private state = createInMemoryState();
+
   async start() {
     await this.startPostgres();
     await this.runMigrations();
     await this.startApp();
+    await this.persistState();
   }
 
   private async startApp() {
@@ -62,14 +66,10 @@ export class TestDriver {
   }
 
   private async runMigrations() {
-    await execAsync('npx prisma db push', {
-      env: { ...process.env, DATABASE_URL: this.getDatabaseUrl() },
-    });
-  }
-
-  private getDatabaseUrl(): string {
     const config = this.getDatabaseConfig();
-    return makeConnectionString(config);
+    const connectionString = makeConnectionString(config);
+
+    await runMigrations(connectionString);
   }
 
   async stop() {
@@ -93,4 +93,50 @@ export class TestDriver {
   private validateDriverStarted() {
     if (!this.app) throw Error('Please call driver.start()');
   }
+
+  async clearState() {
+    this.state = createInMemoryState();
+    await this.truncateAllTables();
+  }
+
+  private async truncateAllTables() {
+    await this.app.get(PrismaService).prisma.sample.deleteMany();
+  }
+
+  createSample(options?: Partial<SampleTestModel>): SampleTestModel {
+    const sample = generateSample(options);
+    this.state.samples.push(sample);
+    return sample;
+  }
+
+  private async persistState() {
+    await this.persistSamples();
+  }
+
+  private async persistSamples() {
+    for (const sample of this.state.samples) {
+      await this.app.get(PrismaService).prisma.sample.create({
+        data: {
+          latitude: sample.latitude,
+          longitude: sample.longitude,
+          createdAt: new Date(),
+        },
+      });
+    }
+  }
+}
+
+function createInMemoryState(): InMemoryState {
+  return {
+    samples: [],
+  };
+}
+
+function generateSample(
+  options: Partial<SampleTestModel> = {},
+): SampleTestModel {
+  return {
+    latitude: options.latitude ?? faker.location.latitude(),
+    longitude: options.longitude ?? faker.location.longitude(),
+  };
 }

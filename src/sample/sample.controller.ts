@@ -2,6 +2,7 @@ import { Body, Controller, Post, Get } from '@nestjs/common';
 import { CreateSampleDto } from './dto/create-sample.dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { GetAllSamplesDto, toGetAllSamplesDto } from './dto';
+import { limitPrecision } from '../common/utils/math';
 
 const PRECISION = 6;
 
@@ -19,15 +20,10 @@ export class SampleController {
   async createSample(@Body() paylod: CreateSampleDto): Promise<void> {
     await this.prismaService.prisma.sample.create({
       data: {
-        latitude: trim(paylod.latitude, PRECISION),
-        longitude: trim(paylod.longitude, PRECISION),
+        latitude: limitPrecision(paylod.latitude, PRECISION),
+        longitude: limitPrecision(paylod.longitude, PRECISION),
         createdAt: new Date(paylod.timestamp),
       },
     });
   }
-}
-
-function trim(value: number, precision: number): number {
-  const multiplier = Math.pow(10, precision);
-  return (value * multiplier) / multiplier;
 }
