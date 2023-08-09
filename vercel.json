@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npx primsa generage && npm run build",
+  "buildCommand": "npx primsa generate && npm run build",
   "builds": [
       {
           "src": "src/main.ts",
