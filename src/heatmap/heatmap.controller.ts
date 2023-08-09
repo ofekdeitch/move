@@ -105,7 +105,7 @@ interface GeoLocationKey {
   longitude: number;
 }
 
-const PRECISION = 5;
+const PRECISION = 4;
 
 function getGeoLocationKey(location: GeoLocation): GeoLocationKey {
   return {
