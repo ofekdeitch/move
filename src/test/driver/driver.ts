@@ -99,7 +99,9 @@ export class TestDriver {
     await this.truncateAllTables();
   }
 
-  private async truncateAllTables() {}
+  private async truncateAllTables() {
+    await this.app.get(PrismaService).prisma.sample.deleteMany();
+  }
 
   createSample(options?: Partial<SampleTestModel>): SampleTestModel {
     const sample = generateSample(options);
