@@ -8,13 +8,10 @@ export class PrismaService implements OnModuleDestroy {
   readonly prisma: PrismaClient;
 
   constructor(private readonly configService: DatabaseConfigService) {
-    const url = this.getConnectionUrl();
-    console.log('Connecting to database...', url);
-
     this.prisma = new PrismaClient({
       datasources: {
         db: {
-          url,
+          url: this.getConnectionUrl(),
         },
       },
     });
