@@ -1,6 +1,6 @@
-const farmhash = require('farmhash');
-const deepEqual = require('deep-equal');
-const stringify = require('json-stable-stringify');
+import farmhash from 'farmhash';
+import deepEqual from 'deep-equal';
+import stringify from 'json-stable-stringify';
 
 export class HashMap<K, V> {
   private buckets: Record<string, Bucket<K, V>> = {};
