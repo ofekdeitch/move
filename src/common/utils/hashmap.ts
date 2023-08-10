@@ -1,5 +1,6 @@
-import * as farmhash from 'farmhash';
-import * as deepEqual from 'deep-equal';
+const farmhash = require('farmhash');
+const deepEqual = require('deep-equal');
+const stringify = require('json-stable-stringify');
 
 export class HashMap<K, V> {
   private buckets: Record<string, Bucket<K, V>> = {};
@@ -82,7 +83,7 @@ export class HashMap<K, V> {
   }
 
   private getSlot(key: K): number {
-    return farmhash.hash32(JSON.stringify(key));
+    return farmhash.hash32(stringify(key));
   }
 
   private deepEqual(a: any, b: any): boolean {
