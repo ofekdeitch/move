@@ -1,6 +1,6 @@
-import * as farmhash from 'farmhash';
-import * as deepEqual from 'deep-equal';
-import * as stringify from 'json-stable-stringify';
+import farmhash from 'farmhash';
+import deepEqual from 'deep-equal';
+import stringify from 'json-stable-stringify';
 
 export class HashMap<K, V> {
   private buckets: Record<string, Bucket<K, V>> = {};
