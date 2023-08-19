@@ -22,6 +22,7 @@
     "prisma:generate": "npx prisma migrate dev --name"
   },
   "dependencies": {
+    "@jocular/collections": "^0.1.0-rc-c1092ce",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.0.0",
     "@nestjs/core": "^10.0.0",

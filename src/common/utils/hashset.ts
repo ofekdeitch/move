@@ -1,4 +1,4 @@
-import { HashMap } from './hashmap';
+import { HashMap } from '@jocular/collections';
 
 export class HashSet<T> {
   private map: HashMap<T, boolean> = new HashMap<T, boolean>();

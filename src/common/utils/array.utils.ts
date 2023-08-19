@@ -1,4 +1,4 @@
-import { HashMap } from './hashmap';
+import { HashMap } from '@jocular/collections';
 
 export function groupBy<T, K>(
   array: T[],
