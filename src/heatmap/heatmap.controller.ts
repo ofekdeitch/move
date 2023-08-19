@@ -3,8 +3,8 @@ import { GetHeatmapResponse, HeatmapPoint } from './dto';
 import { PrismaService } from '../prisma/prisma.service';
 import { GeoLocation, Length } from '../geo';
 import { Sample } from '@prisma/client';
-import { countByValue } from '../common/utils/array.utils';
 import { limitPrecision } from '../common/utils/math';
+import { countBy } from '@jocular/collections';
 
 const SLOT_SIZE = Length.meters(20);
 
@@ -19,7 +19,7 @@ export class HeatmapController {
     const slots = samples.map((sample) =>
       this.getHeatmapPoint(sample.location),
     );
-    const counters = countByValue(slots, (s) => getGeoLocationKey(s));
+    const counters = countBy(slots, (s) => getGeoLocationKey(s));
 
     return {
       points: counters.entries().map(
